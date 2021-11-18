@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "npm run start:dev",
-    "start:dev": "nodemon ./server.js localhost 8080 --config ./nodemon.json"
+    "start:dev": "browser-sync start --config browser-sync.config.js"
   },
   "author": "",
   "license": "ISC",
@@ -14,8 +14,6 @@
     "select-pure": "^2.1.2-alpha.0"
   },
   "devDependencies": {
-    "express": "^4.17.1",
-    "livereload": "^0.9.3",
-    "nodemon": "^2.0.15"
+    "browser-sync": "^2.26.3"
   }
 }
