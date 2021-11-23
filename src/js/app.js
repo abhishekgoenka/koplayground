@@ -1,18 +1,7 @@
 import MultiSelectCombo from "./multi-select-combo.js";
+import KOBinding from "./ko-bindings.js";
 
 const App = (() => {
-  const initBinding = () => {
-    var myViewModel = {
-      personName: "Abhishek",
-      personAge: 99,
-    };
-    ko.applyBindings(myViewModel);
-
-
-    let instance = new MultiSelectCombo(buildComboData(), "selectParam");
-    instance.init();
-  };
-
   const buildComboData = () => {
     return [
       {
@@ -36,10 +25,19 @@ const App = (() => {
         value: "NC",
       },
     ];
-  }
+  };
 
   const init = () => {
-    initBinding();
+    // init multiselect combo
+    let _multiSelectCombo = new MultiSelectCombo(buildComboData(), "selectParam");
+    _multiSelectCombo.init();
+
+    // init KO bindings
+    let koBindings = new KOBinding();
+    koBindings.initBinding();
+    koBindings.getModel().showSelectedItems = function () {
+      this.selectedItems(_multiSelectCombo.selectedItems());
+    }
   };
 
   return {

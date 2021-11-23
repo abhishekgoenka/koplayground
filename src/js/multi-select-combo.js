@@ -4,7 +4,7 @@ const MultiSelectCombo = class {
         this._className = `.${className}`;
     }
     init() {
-        var instance = new SelectPure(this._className, {
+        this._instance = new SelectPure(this._className, {
             options: this._data,
             multiple: true,
             icon: "fa fa-times", // uses Font Awesome
@@ -13,6 +13,10 @@ const MultiSelectCombo = class {
               console.log(value);
             },
           });
+    }
+
+    selectedItems() {
+      return this._instance.value();
     }
 
 }
