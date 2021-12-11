@@ -519,14 +519,17 @@ const JQueryTablePage = (() => {
 
   const init = () => {
     const _model = {
+      selectedValues: ko.observable([]),
       showSelectedColumnDetails: function () {
-        // console.log("as");
-
         const table = $("#employee").DataTable();
         const selectedRows = table.rows({ selected: true }).data();
+        const selectedItems = [];
         for (let index = 0; index < selectedRows.length; index++) {
           console.log(selectedRows[index]);
+          selectedItems.push(selectedRows[index]);
         }
+
+        this.selectedValues(selectedItems);
       },
     };
     ko.applyBindings(_model);
@@ -564,20 +567,6 @@ const JQueryTablePage = (() => {
           { title: "Start date", data: "start_date" },
           { title: "Salary", data: "salary" },
         ],
-      });
-
-      // const table = $("#employee").DataTable();
-      // $("#employee tbody").on("click", "tr", function () {
-      //   if ($(this).hasClass("selected")) {
-      //     $(this).removeClass("selected");
-      //   } else {
-      //     table.$("tr.selected").removeClass("selected");
-      //     $(this).addClass("selected");
-      //   }
-      // });
-
-      $("#button").click(function () {
-        table.row(".selected").remove().draw(false);
       });
     });
   };

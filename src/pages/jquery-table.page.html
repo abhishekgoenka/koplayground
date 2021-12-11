@@ -72,6 +72,12 @@
       <button type="button" class="btn btn-primary" data-bind="click: showSelectedColumnDetails">
         Show selected column details
       </button>
+
+      <!-- <span data-bind="text: selectedValues"></span> -->
+      <!-- <div data-bind="foreach: selectedValues" style="border:solid 1px red;"><span data-bind="text: $data"></span></div> -->
+      <ul data-bind="foreach: selectedValues">
+        <li><span data-bind="text: $data.name"></span> is selected with ID <span data-bind="text: $data.id"></span></li>
+    </ul>
     </main>
     <script
       type="text/javascript"
