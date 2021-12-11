@@ -1,9 +1,8 @@
 import MultiSelectCombo from "./multi-select-combo.js";
 import KOBinding from "./ko-bindings.js";
 
-// inspiration : https://github.com/pistis/tetris/blob/ranking_game_version/src/js/App.js
 
-const App = (() => {
+const JQueryTablePage = (() => {
   // const buildComboData = () => {
   //   return [
   //     {
@@ -47,4 +46,4 @@ const App = (() => {
   };
 })();
 
-App.init();
+JQueryTablePage.init();
