@@ -518,30 +518,40 @@ const JQueryTablePage = (() => {
   };
 
   const init = () => {
-    const _model = {
-      selectedValues: ko.observable([]),
-      showSelectedColumnDetails: function () {
-        const table = $("#employee").DataTable();
-        const selectedRows = table.rows({ selected: true }).data();
-        const selectedItems = [];
-        for (let index = 0; index < selectedRows.length; index++) {
-          console.log(selectedRows[index]);
-          selectedItems.push(selectedRows[index]);
-        }
-
-        this.selectedValues(selectedItems);
-      },
-    };
-    ko.applyBindings(_model);
-
     // init datatable
     $(document).ready(function () {
       $("#employee").DataTable({
+        initComplete: function (settings, json) {
+          console.log("initComplete");
+        },
+        drawCallback: function (settings) {
+          // reset previously selected value
+          $("input[name='id']").prop("checked", false);
+
+          // clear selection if any
+          const table = $("#employee").DataTable();
+          table.rows().deselect();
+
+          $("input[name='id']").click(function (ele) {
+            const target = ele.target;
+            const selectedRowID = target.dataset.rowid;
+            const table = $("#employee").DataTable();
+            table.rows().deselect();
+            table.rows().every(function (rowIdx, tableLoop, rowLoop) {
+              if (this.data().id === selectedRowID) {
+                this.select();
+              } else {
+                this.deselect();
+              }
+            });
+          });
+        },
+
         data: dataSet(),
         // select: true, // for multi select
         select: {
           // for single select
-          style: "single",
+          style: "api",
         },
         columnDefs: [
           {
@@ -551,7 +561,11 @@ const JQueryTablePage = (() => {
             title: "",
             render: function (data, type, full, meta) {
               if (type === "display") {
-                data = '<input type="radio" name="id" value="' + data + '">';
+                const ID = "id-" + full.id;
+                data =
+                  '<input type="radio" name="id" value="false" data-rowID = "' +
+                  full.id +
+                  '">';
               }
 
               return data;
@@ -560,6 +574,7 @@ const JQueryTablePage = (() => {
         ],
         columns: [
           { title: "Select", defaultContent: "" },
+          { title: "ID", data: "id" },
           { title: "Name", data: "name" },
           { title: "Position", data: "position" },
           { title: "Office", data: "office" },
@@ -567,6 +582,27 @@ const JQueryTablePage = (() => {
           { title: "Start date", data: "start_date" },
           { title: "Salary", data: "salary" },
         ],
+      });
+
+      const _model = {
+        selectedValues: ko.observable([]),
+        showSelectedColumnDetails: function () {
+          const table = $("#employee").DataTable();
+          const selectedRows = table.rows({ selected: true }).data();
+          const selectedItems = [];
+          for (let index = 0; index < selectedRows.length; index++) {
+            console.log(selectedRows[index]);
+            selectedItems.push(selectedRows[index]);
+          }
+
+          this.selectedValues(selectedItems);
+        },
+      };
+      ko.applyBindings(_model);
+
+      // query Event binding
+      $("#employee").on("order.dt", function () {
+        console.log(`order.dt`);
       });
     });
   };
